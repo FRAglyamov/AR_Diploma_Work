@@ -5,7 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
 
-[RequireComponent(typeof(ARRaycastManager))]
+//[RequireComponent(typeof(ARRaycastManager))]
 public class ARTapToPlaceObject : MonoBehaviour
 {
 
@@ -19,7 +19,8 @@ public class ARTapToPlaceObject : MonoBehaviour
 
     private void Awake()
     {
-        _arRaycastManager = GetComponent<ARRaycastManager>();
+        //_arRaycastManager = GetComponent<ARRaycastManager>();
+        _arRaycastManager = FindObjectOfType<ARRaycastManager>();
     }
 
     bool TryGetTouchPosition(out Vector2 touchPosition)
