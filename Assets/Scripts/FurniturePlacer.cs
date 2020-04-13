@@ -22,21 +22,21 @@ public class FurniturePlacer : MonoBehaviour
 
     void Update ()
     {
-        // first frame we touch the screen
+        // Первый фрейм, когда касаемся экрана
         if(Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began 
-            && !EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId)) // and not touching the ui
+            && !EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId)) // и не касаемся UI
         {
-            // create a ray from where we're touching on the screen
+            // Создаем луч от того места, где мы касаемся на экране
             Ray ray = cam.ScreenPointToRay(Input.touches[0].position);
             RaycastHit hit;
 
-            // shoot the raycast
+            // Кидаем raycast
             if(Physics.Raycast(ray, out hit))
             {
-                // did we hit something?
+                // Смотрим, попали ли мы во что-то
                 if(hit.collider.gameObject != null && furniture.Contains(hit.collider.gameObject))
                 {
-                    // select the touching object
+                    // Выбираем объект, до которого дотронулись
                     if(curSelected != null && hit.collider.gameObject != curSelected)
                         Select(hit.collider.gameObject);
                     else if(curSelected == null)
@@ -69,7 +69,10 @@ public class FurniturePlacer : MonoBehaviour
         curSelected.transform.position += (camRight * touchDir.x + camForward * touchDir.y);
     }
 
-    // called when we select a furniture piece
+    /// <summary>
+    /// Вызывается при выборе объекта мебели
+    /// </summary>
+    /// <param name="selected"></param>
     void Select (GameObject selected)
     {
         if(curSelected != null)
@@ -80,7 +83,9 @@ public class FurniturePlacer : MonoBehaviour
         selectionUI.SetActive(true);
     }
 
-    // called when we deselect a furniture piece
+    /// <summary>
+    /// Вызывается при снятии выбора с объекта мебели
+    /// </summary>
     void Deselect ()
     {
         if(curSelected != null)
@@ -90,13 +95,20 @@ public class FurniturePlacer : MonoBehaviour
         selectionUI.SetActive(false);
     }
 
-    // called when we select/deselect a furniture piece
+    /// <summary>
+    /// Вызывается при выборе/снятии выбора объекта мебели
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="toggle"></param>
     void ToggleSelectionVisual (GameObject obj, bool toggle)
     {
         obj.transform.Find("Selected").gameObject.SetActive(toggle);
     }
 
-    // called when we press the a furniture button - creates a new piece of furniture
+    /// <summary>
+    /// Вызывается при нажатии кнопки мебели - создаёт новый объект мебели
+    /// </summary>
+    /// <param name="prefab"></param>
     public void PlaceFurniture (GameObject prefab)
     {
         GameObject obj = Instantiate(prefab, placementIndicator.position, Quaternion.identity);
