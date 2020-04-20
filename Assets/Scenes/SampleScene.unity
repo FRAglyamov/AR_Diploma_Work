@@ -652,7 +652,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Couch
+  m_text: Sofa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 180483627}
-    characterCount: 5
+    characterCount: 4
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
@@ -968,7 +968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlanePrefab: {fileID: 917901956887013669, guid: 006865d19f7bf6545a5bfce9581dd915,
     type: 3}
-  m_DetectionMode: -1
+  m_DetectionMode: 1
 --- !u!114 &233964131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1349,7 +1349,7 @@ MonoBehaviour:
         m_MethodName: PlaceFurniture
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 6148905394610786416, guid: bbe235edb4fc91c4a80705f34c2bcbd9,
+          m_ObjectArgument: {fileID: 3077219201633977477, guid: 274d1b0b39f96784f9fc8ebd4e887b84,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -2487,7 +2487,7 @@ MonoBehaviour:
         m_MethodName: PlaceFurniture
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1650524757677657610, guid: d3b5aab510e4d024fb982c9cdc56d8a9,
+          m_ObjectArgument: {fileID: 8007562896485729978, guid: 16e90ee0041716a4191fe85d75cac14a,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -3931,7 +3931,7 @@ MonoBehaviour:
         m_MethodName: PlaceFurniture
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 3481281991512512234, guid: 258d69e95542e974784511fa625b3d4d,
+          m_ObjectArgument: {fileID: 4678521844234606182, guid: 229ca9f58b259af42bcfa34b777cf848,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
@@ -4070,10 +4070,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 60
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 6
+    m_MinSize: 2
     m_MaxSize: 60
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -4496,7 +4496,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chair
+  m_text: Swivel Chair
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4565,10 +4565,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1996614751}
-    characterCount: 5
+    characterCount: 12
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 1
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1

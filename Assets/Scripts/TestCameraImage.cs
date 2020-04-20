@@ -186,14 +186,21 @@ public class TestCameraImage : MonoBehaviour
         {
             map.Add(new KeyValuePair<string, float>(labels[i], output[i]));
         }
-        m_NNInfo.text = "Neural Network Info: ";
+        m_NNInfo.text = "Neural Network Info: \n";
         //m_NNInfo.text += "Inputs: " + inputs["actual_input_1"].ToString() + "\n";
         //m_NNInfo.text += "map: " + map.ToString() + "\n" + Time.time.ToString();
+        string maxValueKey = map[0].Key;
+        float maxValue = map[0].Value;
         foreach (var item in map)
         {
             m_NNInfo.text += "item: " + item.Key + " value: " + item.Value + "\n";
+            if(item.Value > maxValue)
+            {
+                maxValue = item.Value;
+                maxValueKey = item.Key;
+            }
         }
-
+        m_NNInfo.text += "It's a [" + maxValueKey + "]\n";
         //O?.Dispose();
         worker.Dispose();
         this.isWorking = false;

@@ -128,7 +128,7 @@ public class FurniturePlacer : MonoBehaviour
 
     public void SetColor (Image buttonImage)
     {
-        MeshRenderer[] meshRenderers = curSelected.GetComponentsInChildren<MeshRenderer>();
+        MeshRenderer[] meshRenderers = curSelected.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
 
         foreach(MeshRenderer mr in meshRenderers)
         {
