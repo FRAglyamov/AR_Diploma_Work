@@ -2,6 +2,8 @@ using Barracuda;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,6 +43,13 @@ public class TestCameraImage : MonoBehaviour
         get { return m_ImageInfo; }
         set { m_ImageInfo = value; }
     }
+
+    [SerializeField]
+    GameObject NNSearchResultUI;
+
+    [SerializeField]
+    GameObject furnitureButton;
+    bool isSearchResultButtonsInstantiated = false;
 
     void OnEnable()
     {
@@ -109,7 +118,7 @@ public class TestCameraImage : MonoBehaviour
         m_Texture.Apply();
 
         // Устанавливаем RawImage текстуру, чтобы можно было визуализировать
-        m_RawImage.texture = m_Texture;
+        //m_RawImage.texture = m_Texture;
 
         //RunNN();
     }
@@ -122,7 +131,8 @@ public class TestCameraImage : MonoBehaviour
     private Model model;
     private IWorker worker;
     private Tensor output;
-    private string[] labels = new string[] { "bed", "chair", "sofa", "swivelchair" };
+    //private string[] labels = new string[] { "bed", "chair", "sofa", "swivelchair" };
+    private string[] labels = new string[] { "Bed", "Chair", "Sofa", "Swivel chair" };
     private bool isWorking = false;
     private void Start()
     {
@@ -189,18 +199,44 @@ public class TestCameraImage : MonoBehaviour
         m_NNInfo.text = "Neural Network Info: \n";
         //m_NNInfo.text += "Inputs: " + inputs["actual_input_1"].ToString() + "\n";
         //m_NNInfo.text += "map: " + map.ToString() + "\n" + Time.time.ToString();
+
+        map.Sort((x, y) => y.Value.CompareTo(x.Value));
+        var bestResults = map.Take(3);
+        int k = 0;
+        foreach (var item in bestResults)
+        {
+            var f = Resources.Load<ScriptableObject>("Furniture/" + item.Key) as Furniture;
+            GameObject instButton;
+            if (isSearchResultButtonsInstantiated)
+            {
+                instButton = NNSearchResultUI.transform.GetChild(0).GetChild(k).gameObject;
+            }
+            else
+            {
+                instButton = Instantiate(furnitureButton, NNSearchResultUI.transform.GetChild(0));
+            }
+
+            instButton.GetComponent<Image>().sprite = f.Images[0];
+            instButton.GetComponentInChildren<TextMeshProUGUI>().text = f.Name;
+            k++;
+        }
+        isSearchResultButtonsInstantiated = true;
+        //NNSearchResultUI.SetActive(true);
+
         string maxValueKey = map[0].Key;
         float maxValue = map[0].Value;
         foreach (var item in map)
         {
             m_NNInfo.text += "item: " + item.Key + " value: " + item.Value + "\n";
-            if(item.Value > maxValue)
+            if (item.Value > maxValue)
             {
                 maxValue = item.Value;
                 maxValueKey = item.Key;
             }
         }
         m_NNInfo.text += "It's a [" + maxValueKey + "]\n";
+
+
         //O?.Dispose();
         worker.Dispose();
         this.isWorking = false;

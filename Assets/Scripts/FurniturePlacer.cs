@@ -13,6 +13,15 @@ public class FurniturePlacer : MonoBehaviour
     private List<GameObject> furniture = new List<GameObject>();
     private GameObject curSelected;
     private Camera cam;
+    [SerializeField]
+    private ObjectMode mode = ObjectMode.Move;
+
+    public enum ObjectMode
+    {
+        Move = 0,
+        Rotate = 1,
+        Scale = 2
+    };
 
     void Start ()
     {
@@ -48,9 +57,36 @@ public class FurniturePlacer : MonoBehaviour
         }
 
         if(curSelected != null && Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Moved)
-            MoveSelected();
+        {
+            switch (mode)
+            {
+                case ObjectMode.Move:
+                    MoveSelected();
+                    break;
+                case ObjectMode.Rotate:
+                    RotateSelected();
+                    break;
+                case ObjectMode.Scale:
+                    ScaleSelected();
+                    break;
+                default:
+                    break;
+            }
+            //MoveSelected();
+            //RotateSelected();
+            //ScaleSelected();
+        }
+            
+    }
+    
+    public void ChangeObjectMode(int newMode)
+    {
+        mode = (ObjectMode)newMode;
     }
 
+    /// <summary>
+    /// Передвижение выбранного объекта
+    /// </summary>
     void MoveSelected ()
     {
         Vector3 curPos = cam.ScreenToViewportPoint(Input.touches[0].position);
@@ -67,6 +103,37 @@ public class FurniturePlacer : MonoBehaviour
         camForward.Normalize();
 
         curSelected.transform.position += (camRight * touchDir.x + camForward * touchDir.y);
+    }
+    /// <summary>
+    /// Вращение объекта
+    /// </summary>
+    void RotateSelected()
+    {
+        Vector3 curPos = cam.ScreenToViewportPoint(Input.touches[0].position);
+        Vector3 lastPos = cam.ScreenToViewportPoint(Input.touches[0].position - Input.touches[0].deltaPosition);
+
+        Vector3 touchDir = curPos - lastPos;
+
+        curSelected.transform.Rotate(0f, touchDir.x * -300f, 0f);
+    }
+    /// <summary>
+    /// Изменение размера объекта
+    /// </summary>
+    void ScaleSelected()
+    {
+        Vector3 curPos = cam.ScreenToViewportPoint(Input.touches[0].position);
+        Vector3 lastPos = cam.ScreenToViewportPoint(Input.touches[0].position - Input.touches[0].deltaPosition);
+
+        Vector3 touchDir = curPos - lastPos;
+
+        if (curSelected.transform.localScale.x < 0.1f && touchDir.x < 0)
+        {
+            // Если объект меньше 1/10 своего размера, то не уменьшаем его
+        }
+        else
+        {
+            curSelected.transform.localScale += Vector3.one * touchDir.x;
+        }
     }
 
     /// <summary>
