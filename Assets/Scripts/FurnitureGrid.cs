@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,16 +10,13 @@ public class FurnitureGrid : MonoBehaviour
     {
         selectedFurniture = Resources.Load<ScriptableObject>("Furniture/" + GetComponentInChildren<TextMeshProUGUI>().text) as Furniture;
         furnitureInfo = GameObject.FindGameObjectWithTag("UIHolder").GetComponent<UILinkHolder>().GetFurnitureInfoGO();
-        //furnitureInfo = GameObject.FindGameObjectWithTag("FurnitureInfo");
-
-        //GameObject.FindGameObjectWithTag("Catalogue").SetActive(false);
 
         furnitureInfo.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = 
             "Name: " + selectedFurniture.Name + "\n" + 
             "Price: " + selectedFurniture.Price + "\n" + 
             "Description: " + selectedFurniture.Description;
         furnitureInfo.transform.GetChild(1).GetComponent<Image>().sprite = selectedFurniture.Images[0];
-        //furnitureInfo.transform.GetChild(2).GetComponent<Button>().onClick
+
         if (selectedFurniture.Model != null)
         {
             Button watchARButton = furnitureInfo.transform.GetChild(2).GetComponent<Button>();
@@ -32,7 +27,8 @@ public class FurnitureGrid : MonoBehaviour
             
         else
         {
-            // Download model
+            Debug.LogWarning("Missing " + selectedFurniture.name + " model!");
+            // Загрузка модели (нет сервера, поэтому пока нереализовано)
         }
 
         furnitureInfo.SetActive(true);

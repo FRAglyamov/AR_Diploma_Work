@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
 /// <summary>
@@ -16,6 +14,9 @@ public class PlaneDetectionToggle : MonoBehaviour
         m_ARPlaneManager = GetComponent<ARPlaneManager>();
     }
 
+    /// <summary>
+    /// Переключение показа поверхности (вкл/выкл)
+    /// </summary>
     public void TogglePlaneDetection()
     {
         m_ARPlaneManager.enabled = !m_ARPlaneManager.enabled;

@@ -1,11 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class OpenCloseMenu : MonoBehaviour
 {
-    bool isOpened = true;
+    bool isOpened = false;
+
+    /// <summary>
+    /// Открытие и закрытие выпадающего меню
+    /// </summary>
+    /// <param name="isFirstElseLast"></param>
     public void ToggleMenu(bool isFirstElseLast)
     {
         isOpened = !isOpened;
@@ -24,9 +27,5 @@ public class OpenCloseMenu : MonoBehaviour
             }
         }
         GetComponent<Image>().enabled = isOpened;
-        //foreach (Transform child in transform)
-        //{
-        //    child.gameObject.SetActive(true);
-        //}
     }
 }

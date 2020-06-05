@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.ARFoundation;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -72,9 +70,6 @@ public class FurniturePlacer : MonoBehaviour
                 default:
                     break;
             }
-            //MoveSelected();
-            //RotateSelected();
-            //ScaleSelected();
         }
             
     }
@@ -182,6 +177,17 @@ public class FurniturePlacer : MonoBehaviour
         furniture.Add(obj);
         Select(obj);
     }
+    /// <summary>
+    /// Вызывается при загрузке мебели из сохранения
+    /// </summary>
+    /// <param name="prefab"></param>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    public void PlaceFurniture(GameObject prefab, Vector3 position, Quaternion rotation)
+    {
+        GameObject obj = Instantiate(prefab, position, rotation);
+        furniture.Add(obj);
+    }
 
     public void ScaleSelected (float rate)
     {
@@ -211,5 +217,15 @@ public class FurniturePlacer : MonoBehaviour
         furniture.Remove(curSelected);
         Destroy(curSelected);
         Deselect();
+    }
+
+    public void DeleteAll()
+    {
+        Deselect();
+        foreach (var item in furniture)
+        {
+            Destroy(item);
+        }
+        furniture.Clear();
     }
 }

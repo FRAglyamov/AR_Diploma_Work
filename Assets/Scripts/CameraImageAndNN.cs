@@ -1,6 +1,5 @@
 using Barracuda;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -10,7 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class TestCameraImage : MonoBehaviour
+public class CameraImageAndNN : MonoBehaviour
 {
     [SerializeField]
     ARCameraManager m_CameraManager;
@@ -124,23 +123,18 @@ public class TestCameraImage : MonoBehaviour
     }
 
     private Texture2D m_Texture;
-
-
-
     public NNModel modelSource;
     private Model model;
     private IWorker worker;
     private Tensor output;
-    //private string[] labels = new string[] { "bed", "chair", "sofa", "swivelchair" };
     private string[] labels = new string[] { "Bed", "Chair", "Sofa", "Swivel chair" };
     private bool isWorking = false;
     private void Start()
     {
         model = ModelLoader.Load(modelSource);
-        //worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
 
-        var inputNames = model.inputs;   // query model inputs
-        var outputNames = model.outputs; // query model outputs
+        var inputNames = model.inputs;
+        var outputNames = model.outputs;
         m_NNInfo.text += "Input: ";
         foreach (var item in inputNames)
         {
@@ -158,15 +152,8 @@ public class TestCameraImage : MonoBehaviour
 
     }
 
-    //public void RunNN()
-    //{
-    //    StopCoroutine(NNWorker());
-    //    StartCoroutine(NNWorker());
-    //}
-
     public void RunNN()
     {
-        //yield return new WaitForEndOfFrame();
         if (this.isWorking)
         {
             return;
@@ -174,31 +161,18 @@ public class TestCameraImage : MonoBehaviour
         this.isWorking = true;
 
         worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
-        //yield return new WaitForSeconds(0.1f);
-        //m_NNInfo.text = "RunNN" + Time.time;
 
         var inputs = new Dictionary<string, Tensor>();
-        //m_NNInfo.text = "Created inputs" + Time.time;
         inputs["actual_input_1"] = new Tensor(Resize(m_Texture, 32, 32));
-        //m_NNInfo.text = "Inputs added" + Time.time;
         worker.Execute(inputs);
-
-        //var coroutine = worker.ExecuteAsync(inputs);
-        //yield return StartCoroutine(coroutine);
-
-        //m_NNInfo.text = "Worker Execute" + Time.time;
         output = worker.PeekOutput("output1");
-        //m_NNInfo.text = "Output Peekout" + Time.time;
-        //m_NNInfo.text = "Neural Network Info: " + O.ToString() + Time.time;
-        
         var map = new List<KeyValuePair<string, float>>();
+
         for (int i = 0; i < labels.Length; i++)
         {
             map.Add(new KeyValuePair<string, float>(labels[i], output[i]));
         }
         m_NNInfo.text = "Neural Network Info: \n";
-        //m_NNInfo.text += "Inputs: " + inputs["actual_input_1"].ToString() + "\n";
-        //m_NNInfo.text += "map: " + map.ToString() + "\n" + Time.time.ToString();
 
         map.Sort((x, y) => y.Value.CompareTo(x.Value));
         var bestResults = map.Take(3);
@@ -221,7 +195,6 @@ public class TestCameraImage : MonoBehaviour
             k++;
         }
         isSearchResultButtonsInstantiated = true;
-        //NNSearchResultUI.SetActive(true);
 
         string maxValueKey = map[0].Key;
         float maxValue = map[0].Value;
@@ -236,13 +209,17 @@ public class TestCameraImage : MonoBehaviour
         }
         m_NNInfo.text += "It's a [" + maxValueKey + "]\n";
 
-
-        //O?.Dispose();
         worker.Dispose();
         this.isWorking = false;
-
-
     }
+
+    /// <summary>
+    /// ѕреобразование изображени€ (дл€ последующей подачи в нейронную сеть)
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="newWidth"></param>
+    /// <param name="newHeight"></param>
+    /// <returns></returns>
     public static Texture2D Resize(Texture2D source, int newWidth, int newHeight)
     {
         source.filterMode = FilterMode.Point;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -12,15 +10,22 @@ public class LoadListOfSaves : MonoBehaviour
     GameObject loadButton;
     private string path;
 
+    [SerializeField]
+    private FurniturePlacer furniturePlacer;
+
     private void Start()
     {
         path = Application.persistentDataPath;
+        if (furniturePlacer == null)
+        {
+            furniturePlacer = Camera.main.GetComponent<FurniturePlacer>();
+        }
     }
 
     private void OnEnable()
     {
         DeleteAllChildrens();
-        string[] saveFiles = Directory.GetFiles(Application.persistentDataPath);
+        string[] saveFiles = Directory.GetFiles(Application.persistentDataPath, "*.json");
         foreach (var item in saveFiles)
         {
             Debug.Log(item);
@@ -32,19 +37,26 @@ public class LoadListOfSaves : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Считывание и загрузка сохранения из JSON файла
+    /// </summary>
+    /// <param name="saveName"></param>
     public void Load(string saveName = "save")
     {
         string json = File.ReadAllText(path + "/" + saveName + ".json");
         Save save = new Save();
         JsonUtility.FromJsonOverwrite(json, save);
+
+        furniturePlacer.DeleteAll();
         foreach (var f in save.furnitureSave)
         {
             Debug.Log("Instantiate " + f.name);
-            Instantiate(Resources.Load<Furniture>("Furniture/" + f.name).Model, f.pos, f.rot);
+            furniturePlacer.PlaceFurniture(Resources.Load<Furniture>("Furniture/" + f.name).Model, f.pos, f.rot);
         }
     }
-
+    /// <summary>
+    /// Очистка списка в UI, путём удаления потомков
+    /// </summary>
     private void DeleteAllChildrens()
     {
         foreach (Transform child in transform)

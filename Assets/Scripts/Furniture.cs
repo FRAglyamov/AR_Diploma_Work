@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ public class Furniture : ScriptableObject
     public string Name; // Наименование товара
     public string Description; // Описание
     public float Price; // Цена
-    public string ProductType; // Enum или string?
+    public string ProductType; // Тип продукта (стол, стул, кресло и т.п.)
     public List<Sprite> Images; // Изображения
     public GameObject Model; // 3D Модель - Prefab
 }

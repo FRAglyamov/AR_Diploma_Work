@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 public class SaveToJSON : MonoBehaviour
@@ -17,7 +15,10 @@ public class SaveToJSON : MonoBehaviour
     {
         Save(inputText.text);
     }
-
+    /// <summary>
+    /// Сохранение в JSON файл текущей мебели на сцене, её позиции и поворота
+    /// </summary>
+    /// <param name="saveName"></param>
     public void Save(string saveName = "save")
     {
         furnitureArray = GameObject.FindGameObjectsWithTag("Furniture");
@@ -34,13 +35,13 @@ public class SaveToJSON : MonoBehaviour
 
         foreach (var f in furnitureArray)
         {
-            Debug.Log("Furniture array contains: " + f.name + " - " + f.name.Split('(')[0]);
+            // Debug.Log("Furniture array contains: " + f.name + " - " + f.name.Split('(')[0]);
             save.furnitureSave[k] = new FurnitureSave { name = f.name.Split('(')[0], pos = f.transform.position, rot = f.transform.rotation };
             k++;
         }
 
         json = JsonUtility.ToJson(save);
-        Debug.Log("Final JSON: " + json);
+        // Debug.Log("Final JSON: " + json);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/" + saveName + ".json", json);
     }
 }
